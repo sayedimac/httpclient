@@ -1,10 +1,19 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
+// We call 3 methods in this code: 
+// One to get the REST data, 
 var content = await GetContentFromUrlAsync("https://bigconference.azurewebsites.net/sessions");
+// one to parse the JSON data, 
 var sessions = ParseSessions(content);
+// and one to print the data.
 PrintSessions(sessions);
 
+
+// This method gets the data from the REST API 
+// You can get see the data by navigating to the link above
+// The key is a secret key that is required to access the data but not used in this example
 async Task<string> GetContentFromUrlAsync(string url)
 {
     using var client = new HttpClient();
@@ -15,6 +24,8 @@ async Task<string> GetContentFromUrlAsync(string url)
     return await response.Content.ReadAsStringAsync();
 }
 
+// This method parses the JSON data and returns a list of  ** ConferenceSession ** objects. 
+// See the classlib.cs file for the definition of the  **  ConferenceSession ** class
 List<ConferenceSession> ParseSessions(string content)
 {
     JsonDocument jsonDocument = JsonDocument.Parse(content);
@@ -68,6 +79,9 @@ List<ConferenceSession> ParseSessions(string content)
     return sessions;
 }
 
+// Finally, this method prints the data to the console
+// The data is a list of ** ConferenceSession ** objects which is passed to this method
+// See the classlib.cs file for the definition of the  **  ConferenceSession ** class
 void PrintSessions(List<ConferenceSession> sessions)
 {
     Console.WriteLine($"Conference Sessions ({sessions.Count}):");
